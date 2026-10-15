@@ -154,7 +154,7 @@ checkCharacter(user: Stroke[], ref: KanaRef, level: Level, mode: 'trace' | 'free
 | Direction | hint only | fails | fails |
 | Shape tolerance | loose | medium | tight |
 
-Tolerances live in a single `TOLERANCE` config object, tuned against recorded fixtures (§6).
+Tolerances live in a single `TOLERANCE` config object, tuned against recorded fixtures (§7).
 
 ### Accepted stroke-count variants
 
