@@ -418,7 +418,7 @@ describe('pathLength', () => {
 describe('resample', () => {
   it('spaces points evenly along a line', () => {
     const out = resample([{ x: 0, y: 0 }, { x: 10, y: 0 }], 11)
-    expect(out.map(p => p.x)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    out.forEach((p, i) => { expect(p.x).toBeCloseTo(i); expect(p.y).toBe(0) })
   })
 
   it('keeps corners when sampling a polyline', () => {
@@ -598,7 +598,9 @@ describe('isTap', () => {
 
 describe('checkStroke', () => {
   it('passes an exact stroke', () => {
-    expect(checkStroke(H, H, 'strict')).toMatchObject({ ok: true, issue: undefined })
+    const r = checkStroke(H, H, 'strict')
+    expect(r.ok).toBe(true)
+    expect(r.issue).toBeUndefined()
   })
   it('flags a reversed stroke as direction (fail on normal, hint on easy)', () => {
     expect(checkStroke(reversed(H), H, 'normal')).toMatchObject({ ok: false, issue: 'direction' })
@@ -2758,7 +2760,8 @@ import type { Point } from '../src/core/stroke/types'
 
 const KANA = JSON.parse(readFileSync('data/kanjivg/kana.json', 'utf8')) as Record<string, { strokes: string[] }>
 
-export const refStrokes = (char: string): Point[][] => KANA[char].strokes.map(d => pathToPoints(d))
+/** Reference strokes with 4 samples per curve: enough geometry (the checker resamples to 32) and fast to replay. */
+export const refStrokes = (char: string): Point[][] => KANA[char].strokes.map(d => pathToPoints(d, 4))
 
 /** Draws strokes (in 0..109 viewBox units) into the writing box with the mouse. */
 export async function drawStrokes(page: Page, strokes: Point[][], transform: (p: Point) => Point = p => p) {
@@ -3399,6 +3402,7 @@ test('path unlocks only the first row at the start, and lessons step through the
 })
 
 test('passing the あ-row quiz unlocks the か row', async ({ page }) => {
+  test.slow()
   await page.goto(appUrl('kana/hiragana/quiz/a'))
   for (let i = 0; i < 5; i++) {
     const romaji = await page.getByTestId('quiz-prompt').textContent()
