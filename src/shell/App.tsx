@@ -22,8 +22,8 @@ export function App({ modules }: { modules: LearningModule[] }) {
       <nav class="topbar">
         <a class="button" href={href()}>🏠 Home</a>
         <span class="topbar-right">
-          <a href={href('settings')} aria-label="Settings">⚙️</a>
-          <a href={href('about')} aria-label="About">ℹ️</a>
+          <a class="button" href={href('settings')}>⚙️ Settings</a>
+          <a class="button" href={href('about')}>ℹ️ About</a>
         </span>
       </nav>
       <Banner />
