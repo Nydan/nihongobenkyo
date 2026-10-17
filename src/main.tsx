@@ -1,3 +1,6 @@
 import { render } from 'preact'
+import { kanaModule } from './modules/kana'
+import { App } from './shell/App'
+import './shell/styles.css'
 
-render(<h1>Nihongo Benkyō</h1>, document.getElementById('app')!)
+render(<App modules={[kanaModule]} />, document.getElementById('app')!)
