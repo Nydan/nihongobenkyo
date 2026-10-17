@@ -2,7 +2,7 @@
 
 A web app for learning Japanese, starting with **writing hiragana and katakana stroke by stroke**. It works for children and adults, with a finger on a tablet, an Apple Pencil, or a mouse.
 
-> Status: in design. See [`docs/superpowers/specs/2026-10-15-kana-writing-design.md`](docs/superpowers/specs/2026-10-15-kana-writing-design.md).
+> Status: v1 implemented — see [`docs/ipad-checklist.md`](docs/ipad-checklist.md) for on-device testing. Design: [`docs/superpowers/specs/2026-10-15-kana-writing-design.md`](docs/superpowers/specs/2026-10-15-kana-writing-design.md).
 
 ## Features (Kana Writing module)
 
@@ -35,9 +35,21 @@ Requires Node.js.
 npm install
 npm run dev                          # local dev server
 npm test                             # unit tests (Vitest)
+npm run test:e2e                     # build + end-to-end tests (Playwright WebKit)
 npm run build                        # → dist/index.html (self-contained) + offline files
 npm run data:kana -- <kanjivg-svgs>  # regenerate data/kanjivg/kana.json
+npm run icons                        # regenerate public/icon-*.png
 ```
+
+## Deploying (GitHub Pages)
+
+1. Push this repo to GitHub.
+2. Repository **Settings → Pages → Source: GitHub Actions**.
+3. Every push to `main` runs `.github/workflows/pages.yml` (tests → build → deploy).
+4. On iPad: open the Pages URL in Safari → Share → **Add to Home Screen**.
+
+To try it on an iPad before deploying: `npm run build && npm run serve`, then open `http://<your-mac-ip>:4173`
+on the same Wi-Fi. See `docs/ipad-checklist.md`.
 
 ## Project layout
 
