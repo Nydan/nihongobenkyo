@@ -32,9 +32,22 @@ export function checkStroke(user: Stroke, ref: Stroke, level: Level): StrokeResu
   return { ok: false, issue: 'shape', distance: forward }
 }
 
+/**
+ * A variant with fewer strokes joins reference strokes, which only adds connecting ink. If there is less ink than the
+ * reference, a stroke was left out. Measured on real kana (き, さ, ふ, り), exact and sloppy: joined forms have
+ * 1.14–1.38 × the reference ink, and forms with one stroke dropped have 0.46–0.91 ×. The exception is free mode when
+ * the dropped stroke sets the bbox (up to 1.19 ×), but the shape distance already rejects those (d ≥ 26).
+ * Split variants (more strokes, e.g. そ) are not checked.
+ */
+function hasJoinInk(user: Stroke[], ref: CheckRef): boolean {
+  if (user.length > ref.strokes.length) return true
+  const ink = (strokes: Stroke[]) => strokes.reduce((t, s) => t + pathLength(s), 0)
+  return ink(user) >= ink(ref.strokes)
+}
+
 function checkVariant(user: Stroke[], ref: CheckRef, level: Level): CharacterResult {
   const d = meanDistance(resample(user.flat(), MERGED_SAMPLES), resample(ref.strokes.flat(), MERGED_SAMPLES))
-  const ok = d <= TOLERANCE[level]
+  const ok = d <= TOLERANCE[level] && hasJoinInk(user, ref)
   return {
     passed: ok,
     strokes: user.map(() => (ok ? { ok, distance: d } : { ok, issue: 'shape' as const, distance: d })),
