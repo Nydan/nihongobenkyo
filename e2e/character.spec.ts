@@ -3,6 +3,7 @@ import { appUrl, drawStrokes, refStrokes } from './helpers'
 
 test('watch steps through あ stroke by stroke', async ({ page }) => {
   await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Watch/ }).click()
   await expect(page.locator('.char-big')).toHaveText('あ')
   await expect(page.locator('.romaji').first()).toHaveText('a')
   const progress = page.getByTestId('watch-progress')
@@ -19,6 +20,7 @@ test('watch steps through あ stroke by stroke', async ({ page }) => {
 
 test('watch offers the trace step once every stroke is shown', async ({ page }) => {
   await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Watch/ }).click()
   const toTrace = page.getByRole('button', { name: /Next: ✍️ Trace/ })
   await expect(toTrace).toHaveCount(0)
   for (let i = 0; i < 3; i++) await page.getByRole('button', { name: 'Next stroke' }).click()
@@ -28,12 +30,19 @@ test('watch offers the trace step once every stroke is shown', async ({ page }) 
 
 test('replay at stroke 1 restarts the stroke animation', async ({ page }) => {
   await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Watch/ }).click()
   await expect(page.getByTestId('watch-progress')).toHaveText('1 / 3')
   const animated = await page.locator('.ref-stroke.animate').elementHandle()
   await page.getByRole('button', { name: 'Replay' }).click()
   // A new path element replays the CSS animation from the start.
   await expect.poll(() => animated!.evaluate(el => el.isConnected)).toBe(false)
   await expect(page.locator('.ref-stroke.animate')).toHaveCount(1)
+})
+
+test('a character opens on the trace step', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await expect(page.getByRole('tab', { name: /Trace/ })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByTestId('writing-box')).toBeVisible()
 })
 
 test('percent-encoded character URLs work', async ({ page }) => {

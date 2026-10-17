@@ -19,10 +19,13 @@ const STEPS: { id: StepId; icon: string; label: string }[] = [
 /** How long a passed step stays on screen, so its green strokes and message are seen, before the next step opens. */
 const ADVANCE_MS = 1200
 
-/** Parent routes must pass `key={char}` so step state resets per character. */
-export function CharacterScreen({ char, footer }: { char: string; footer?: ComponentChildren }) {
+/**
+ * Parent routes must pass `key={char}` so step state resets per character.
+ * Opens on Trace, whose guide already shows the strokes; Watch stays a tab for the animated order and direction.
+ */
+export function CharacterScreen({ char, back, footer }: { char: string; back?: ComponentChildren; footer?: ComponentChildren }) {
   const kana = findKana(char)
-  const [step, setStep] = useState<StepId>('watch')
+  const [step, setStep] = useState<StepId>('trace')
   const [visit, setVisit] = useState(0) // keys the step, so tapping its tab again starts it over
   const [passed, setPassed] = useState<StepId | null>(null)
   const next = STEPS[STEPS.findIndex(s => s.id === step) + 1]?.id
@@ -45,6 +48,7 @@ export function CharacterScreen({ char, footer }: { char: string; footer?: Compo
 
   return (
     <section class="char-screen">
+      {back}
       <header class="char-head">
         <span class="char-big" lang="ja">{char}</span>
         <span class="romaji">{kana.romaji}</span>
