@@ -20,7 +20,7 @@ export function App({ modules }: { modules: LearningModule[] }) {
   return (
     <div class="app">
       <nav class="topbar">
-        <a href={href()} aria-label="Home">🏠</a>
+        <a class="button" href={href()}>🏠 Home</a>
         <span class="topbar-right">
           <a href={href('settings')} aria-label="Settings">⚙️</a>
           <a href={href('about')} aria-label="About">ℹ️</a>
