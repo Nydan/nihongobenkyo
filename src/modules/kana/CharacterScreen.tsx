@@ -3,12 +3,14 @@ import { useState } from 'preact/hooks'
 import { NotFound } from '../../core/NotFound'
 import { SpeakButton } from '../../core/SpeakButton'
 import { findKana } from './chars'
+import { TraceStep } from './TraceStep'
 import { WatchStep } from './WatchStep'
 
 export type StepId = 'watch' | 'trace' | 'copy' | 'test'
 
 const STEPS: { id: StepId; icon: string; label: string }[] = [
   { id: 'watch', icon: '👀', label: 'Watch' },
+  { id: 'trace', icon: '✍️', label: 'Trace' },
 ]
 
 /** Parent routes must pass `key={char}` so step state resets per character. */
@@ -32,6 +34,7 @@ export function CharacterScreen({ char, footer }: { char: string; footer?: Compo
         ))}
       </nav>
       {step === 'watch' && <WatchStep char={char} />}
+      {step === 'trace' && <TraceStep char={char} onNext={() => setStep('copy')} />}
       {footer && <div class="char-footer">{footer}</div>}
     </section>
   )

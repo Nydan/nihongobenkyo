@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { appUrl } from './helpers'
+import { appUrl, drawStrokes, refStrokes } from './helpers'
 
 test('watch steps through あ stroke by stroke', async ({ page }) => {
   await page.goto(appUrl('kana/hiragana/char/あ'))
@@ -37,4 +37,20 @@ test('unknown character, script or script mismatch shows not found', async ({ pa
     await expect(notFound).toBeVisible()
     await expect(page.locator('.char-big')).toHaveCount(0)
   }
+})
+
+test('tracing あ correctly earns a star message', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Trace/ }).click()
+  await drawStrokes(page, refStrokes('あ'))
+  await expect(page.getByTestId('message')).toHaveText('⭐ Traced!')
+  await expect(page.getByRole('button', { name: /Next: 👁️ Copy/ })).toBeVisible()
+})
+
+test('tracing a stroke backwards is rejected with a direction hint', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Trace/ }).click()
+  await drawStrokes(page, [[...refStrokes('あ')[0]].reverse()])
+  await expect(page.getByTestId('message')).toHaveText('↔️ Stroke 1 goes the other way')
+  await expect(page.getByRole('button', { name: 'Undo stroke' })).toBeDisabled()
 })

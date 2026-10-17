@@ -5,6 +5,7 @@ import { CharacterScreen } from './CharacterScreen'
 import { findKana } from './chars'
 import type { Script } from './chars'
 import { KanaHome } from './KanaHome'
+import { PROGRESS_NS } from './progress'
 
 const asScript = (s: string): Script | null => (s === 'hiragana' || s === 'katakana' ? s : null)
 const withScript = (render: (script: Script, p: Record<string, string>) => ComponentChildren) =>
@@ -17,7 +18,7 @@ export const kanaModule: LearningModule = {
   id: 'kana',
   title: 'Kana Writing',
   icon: 'あ',
-  progressKey: 'kana',
+  progressKey: PROGRESS_NS,
   routes: [
     { path: '', render: () => <KanaHome /> },
     {
