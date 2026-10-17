@@ -1,3 +1,4 @@
+import { resetPenDetection } from '../core/ink/pointer'
 import { useSettings } from '../core/settings'
 import type { Level } from '../core/stroke/types'
 
@@ -21,6 +22,11 @@ export function Settings() {
             <small>{l.hint}</small>
           </label>
         ))}
+      </fieldset>
+      <fieldset>
+        <legend>Stylus</legend>
+        <p>✏️ When an Apple Pencil is used, finger touches in the writing box are ignored.</p>
+        <button onClick={() => { resetPenDetection(); alert('Finger drawing is back on.') }}>☝️ Allow finger drawing again</button>
       </fieldset>
     </section>
   )
