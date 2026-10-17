@@ -54,3 +54,66 @@ test('tracing a stroke backwards is rejected with a direction hint', async ({ pa
   await expect(page.getByTestId('message')).toHaveText('↔️ Stroke 1 goes the other way')
   await expect(page.getByRole('button', { name: 'Undo stroke' })).toBeDisabled()
 })
+
+test('copy: a small, centered あ passes and shows the model', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Copy/ }).click()
+  await expect(page.getByTestId('model')).toBeVisible()
+  await drawStrokes(page, refStrokes('あ'), p => ({ x: 54.5 + (p.x - 54.5) * 0.6, y: 54.5 + (p.y - 54.5) * 0.6 }))
+  await page.getByRole('button', { name: 'Check' }).click()
+  await expect(page.getByTestId('message')).toContainText('✅ Correct!')
+  await expect(page.getByRole('button', { name: /Try again/ })).toBeVisible()
+})
+
+test('test: swapped stroke order is reported on Normal', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Test/ }).click()
+  await expect(page.getByTestId('model')).toHaveCount(0)
+  const [s1, s2, s3] = refStrokes('あ')
+  await drawStrokes(page, [s2, s1, s3])
+  await page.getByRole('button', { name: 'Check' }).click()
+  await expect(page.getByTestId('message')).toContainText('do stroke 1 first')
+})
+
+test('test: Easy level lets order mistakes pass as hints', async ({ page }) => {
+  await page.goto(appUrl('settings'))
+  await page.getByLabel(/Easy/).check()
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Test/ }).click()
+  const [s1, s2, s3] = refStrokes('あ')
+  await drawStrokes(page, [s2, s1, s3])
+  await page.getByRole('button', { name: 'Check' }).click()
+  await expect(page.getByTestId('message')).toContainText('✅ Correct!')
+})
+
+/** A single click inside the writing box: pointer down and up at the same spot, i.e. an accidental tap. */
+async function tapBox(page: import('@playwright/test').Page) {
+  const box = await page.getByTestId('writing-box').boundingBox()
+  if (!box) throw new Error('writing box not visible')
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2)
+}
+
+test('trace: an accidental tap is ignored, then tracing あ still earns the star', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Trace/ }).click()
+  await tapBox(page)
+  await expect(page.getByTestId('message')).toHaveText('')
+  await expect(page.getByRole('button', { name: 'Undo stroke' })).toBeDisabled()
+  await drawStrokes(page, refStrokes('あ'))
+  await expect(page.getByTestId('message')).toHaveText('⭐ Traced!')
+})
+
+test('copy: taps before and between strokes are not counted as extra strokes', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await page.getByRole('tab', { name: /Copy/ }).click()
+  const [s1, s2, s3] = refStrokes('あ')
+  await tapBox(page)
+  await expect(page.getByRole('button', { name: 'Check' })).toBeDisabled()
+  await drawStrokes(page, [s1])
+  await tapBox(page)
+  await drawStrokes(page, [s2, s3])
+  await tapBox(page)
+  await page.getByRole('button', { name: 'Check' }).click()
+  await expect(page.getByTestId('message')).toContainText('✅ Correct!')
+  await expect(page.getByTestId('message')).not.toContainText('extra')
+})
