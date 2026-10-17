@@ -89,3 +89,21 @@ legend { font-weight: bold; margin-bottom: 8px; }
 .model { width: min(28vw, 160px); aspect-ratio: 1; background: var(--surface); border-radius: var(--radius); padding: 8px; }
 .model svg { width: 100%; height: 100%; }
 .ref-stroke.dashed { stroke: var(--muted); stroke-dasharray: 3 3; opacity: 0.8; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.tabs [aria-current="page"] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.kana-grid { display: grid; gap: 8px; }
+.grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.grid-cell { display: grid; justify-items: center; padding: 8px 4px; background: var(--surface); border-radius: 12px; text-decoration: none; }
+.grid-cell.empty { background: transparent; }
+.grid-char { font-size: 2rem; }
+.grid-cell .romaji { font-size: 0.9rem; }
+.stars { font-size: 0.75rem; letter-spacing: -1px; }
+.path { list-style: none; padding: 0; display: grid; gap: 12px; max-width: 420px; margin: 0 auto; }
+.path-node .button { width: 100%; justify-content: flex-start; font-size: 1.3rem; }
+.path-node.review .button { border-style: dashed; }
+.locked { opacity: 0.5; cursor: default; }
+.quiz { display: grid; gap: 12px; justify-items: center; }
+.romaji-big { font-size: 2rem; color: var(--accent); }
+.quiz-done { text-align: center; padding: 32px 0; }
+.celebrate { font-size: 2rem; }
+.lesson-progress { color: var(--muted); }
