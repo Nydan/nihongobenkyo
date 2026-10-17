@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { ALL_KANA } from '../../modules/kana/chars'
-import { getCheckRef, getRefStrokes } from '../../modules/kana/data'
-import { checkCharacter, checkStroke } from './check'
-import { resample } from './geometry'
-import type { Level, Stroke } from './types'
+import { checkCharacter, checkStroke } from '../../core/stroke/check'
+import { resample } from '../../core/stroke/geometry'
+import type { Level, Stroke } from '../../core/stroke/types'
+import { ALL_KANA } from './chars'
+import { getCheckRef, getRefStrokes } from './data'
 
 const LEVELS: Level[] = ['easy', 'normal', 'strict']
 const CHARS = ['あ', 'き', 'シ', 'ふ']
