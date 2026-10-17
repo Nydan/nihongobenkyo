@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'preact/hooks'
 import { WritingBox } from '../../core/ink/WritingBox'
 import { useSettings } from '../../core/settings'
+import { speak } from '../../core/speech'
 import { checkStroke, isTap } from '../../core/stroke/check'
 import type { Stroke } from '../../core/stroke/types'
 import { getKanaData, getRefStrokes } from './data'
 import { issueMessage } from './messages'
 import { useKanaProgress, withStars } from './progress'
 
-export function TraceStep({ char, onNext }: { char: string; onNext: () => void }) {
+export function TraceStep({ char, onPass }: { char: string; onPass: () => void }) {
   const paths = getKanaData(char).strokes
   const ref = getRefStrokes(char)
   const [settings] = useSettings()
@@ -37,6 +38,8 @@ export function TraceStep({ char, onNext }: { char: string; onNext: () => void }
     if (next.length === ref.length) {
       updateProgress(p => withStars(p, char, 1))
       setMessage('⭐ Traced!')
+      speak(char) // here rather than after a delay: iOS only speaks inside the user's gesture
+      onPass()
     } else {
       setMessage(res.issue ? issueMessage(res.issue, idx + 1) : '')
     }
@@ -55,7 +58,6 @@ export function TraceStep({ char, onNext }: { char: string; onNext: () => void }
       <div class="controls">
         <button aria-label="Undo stroke" disabled={idx === 0} onClick={() => { setStrokes(strokes.slice(0, -1)); setMessage('') }}>↩️</button>
         <button aria-label="Clear" disabled={idx === 0} onClick={() => { setStrokes([]); setMessage('') }}>🗑️</button>
-        {complete && <button class="primary" onClick={onNext}>Next: 👁️ Copy ▶</button>}
       </div>
     </div>
   )

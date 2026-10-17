@@ -12,6 +12,8 @@ A web app for learning Japanese, starting with **writing hiragana and katakana s
   2. ✍️ **Trace**: trace over the guide, with each stroke checked as you go
   3. 👁️ **Copy**: write it with the model shown beside the box
   4. 🎯 **Test**: write it from memory, then get it checked
+
+  A correct answer plays the pronunciation and moves on to the next step.
 - Checks stroke **count, order, direction and shape**, with 🐣 Easy / 🙂 Normal / 🎓 Strict levels
 - 🔊 Pronunciation through the device's Japanese voice
 - ⭐ Progress saved on the device; works offline

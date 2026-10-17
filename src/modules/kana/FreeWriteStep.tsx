@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks'
 import { WritingBox } from '../../core/ink/WritingBox'
 import { useSettings } from '../../core/settings'
+import { speak } from '../../core/speech'
 import { checkCharacter, isTap, type CharacterResult } from '../../core/stroke/check'
 import type { Stroke } from '../../core/stroke/types'
 import { getCheckRef, getKanaData } from './data'
@@ -22,9 +23,11 @@ export interface FreeWriteStepProps {
   stars: 2 | 3
   /** When set (quiz), shows "Next ▶" after checking instead of "Try again". */
   onDone?: (passed: boolean) => void
+  /** Called when a check passes; "Try again" is then not shown, since the parent moves on. */
+  onPass?: () => void
 }
 
-export function FreeWriteStep({ char, showModel, stars, onDone }: FreeWriteStepProps) {
+export function FreeWriteStep({ char, showModel, stars, onDone, onPass }: FreeWriteStepProps) {
   const paths = getKanaData(char).strokes
   const [settings] = useSettings()
   const [, updateProgress] = useKanaProgress()
@@ -34,7 +37,10 @@ export function FreeWriteStep({ char, showModel, stars, onDone }: FreeWriteStepP
   function check() {
     const r = checkCharacter(strokes, getCheckRef(char), settings.level, 'free')
     setResult(r)
-    if (r.passed) updateProgress(p => withStars(p, char, stars))
+    if (!r.passed) return
+    updateProgress(p => withStars(p, char, stars))
+    speak(char) // inside the Check tap: iOS only speaks during a user gesture
+    onPass?.()
   }
   const reset = () => { setStrokes([]); setResult(null) }
 
@@ -73,7 +79,7 @@ export function FreeWriteStep({ char, showModel, stars, onDone }: FreeWriteStepP
         )}
         {result && (onDone
           ? <button class="primary" onClick={() => onDone(result.passed)}>Next ▶</button>
-          : <button class="primary" onClick={reset}>🔄 Try again</button>)}
+          : !result.passed && <button class="primary" onClick={reset}>🔄 Try again</button>)}
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks'
 import { Guide } from '../../core/ink/Guide'
 import { getKanaData } from './data'
 
-export function WatchStep({ char }: { char: string }) {
+export function WatchStep({ char, onNext }: { char: string; onNext: () => void }) {
   const data = getKanaData(char)
   const n = data.strokes.length
   const [k, setK] = useState(1) // 1..n: animating stroke k; n + 1: final form
@@ -35,6 +35,7 @@ export function WatchStep({ char }: { char: string }) {
         <span class="watch-progress" data-testid="watch-progress">{done ? '✅ Done' : `${k} / ${n}`}</span>
         <button aria-label="Next stroke" disabled={done} onClick={() => setK(k + 1)}>▶</button>
         <button aria-label="Replay" onClick={() => { setK(1); setReplays(replays + 1) }}>🔁</button>
+        {done && <button class="primary" onClick={onNext}>Next: ✍️ Trace ▶</button>}
       </div>
     </div>
   )
