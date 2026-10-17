@@ -3,7 +3,7 @@
 Run on a real iPad (Safari) against the hosted URL, or `npm run build && npm run serve` on the same Wi-Fi
 (open `http://<mac-ip>:4173`; offline mode needs HTTPS, so skip steps 7 and 8 on LAN).
 
-1. Home → Kana Writing → Hiragana → Path: only the あ row is open.
+1. Home → Hiragana: the grid opens first. Tap 🗺️ Path: only the あ row is open.
 2. Watch あ: ◀ ▶ step through 3 strokes with numbers and arrows; 🔊 plays (if a Japanese voice is installed).
 3. Trace with a finger: page does not scroll or zoom while drawing; each stroke is accepted or flashes red.
 4. Trace with Apple Pencil while resting your palm on the screen: the palm draws nothing.
