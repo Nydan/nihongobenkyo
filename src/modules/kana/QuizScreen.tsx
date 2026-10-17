@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks'
 import { NotFound } from '../../core/NotFound'
 import { href } from '../../core/router'
 import { SpeakButton } from '../../core/SpeakButton'
+import { BackLink } from './BackLink'
 import { findKana, type Script } from './chars'
 import { FreeWriteStep } from './FreeWriteStep'
 import { findNode, nodeKey } from './path'
@@ -28,6 +29,7 @@ export function QuizScreen({ script, nodeId }: { script: Script; nodeId: string 
   const done = node.chars.length - state.queue.length
   return (
     <section class="quiz">
+      <BackLink script={script} to="path" />
       <p class="quiz-progress">✅ {done} / {node.chars.length}</p>
       <h2>
         <span class="quiz-script" lang="ja" data-testid="quiz-script">{script === 'hiragana' ? 'ひらがな' : 'カタカナ'}</span>{' '}

@@ -1,6 +1,7 @@
 import type { ComponentChildren } from 'preact'
 import type { LearningModule } from '../../core/module'
 import { NotFound } from '../../core/NotFound'
+import { BackLink } from './BackLink'
 import { CharacterScreen } from './CharacterScreen'
 import { findKana } from './chars'
 import type { Script } from './chars'
@@ -32,7 +33,7 @@ export const kanaModule: LearningModule = {
       path: ':script/char/:char',
       // A character under the wrong script (ア in /hiragana/) is not a page.
       render: withScript((script, p) =>
-        findKana(p.char)?.script === script ? <CharacterScreen key={p.char} char={p.char} /> : <NotFound />),
+        findKana(p.char)?.script === script ? <CharacterScreen key={p.char} char={p.char} back={<BackLink script={script} to="grid" />} /> : <NotFound />),
     },
     // LessonScreen and QuizScreen render NotFound themselves for an unknown node or an out-of-range index.
     { path: ':script/lesson/:node/:i', render: withScript((s, p) => <LessonScreen key={`${s}/${p.node}/${p.i}`} script={s} nodeId={p.node} index={Number(p.i)} />) },

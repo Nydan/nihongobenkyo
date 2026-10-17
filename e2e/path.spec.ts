@@ -8,6 +8,8 @@ test('the script screen opens on the grid of all 46 hiragana and opens a charact
   await expect(page.locator('a.grid-cell')).toHaveCount(46)
   await page.locator('a.grid-cell', { hasText: 'き' }).click()
   await expect(page.locator('.char-big')).toHaveText('き')
+  await page.getByRole('link', { name: /Grid/ }).click()
+  await expect(page.locator('a.grid-cell')).toHaveCount(46)
 })
 
 test('path unlocks only the first row at the start, and lessons step through the row', async ({ page }) => {
@@ -19,6 +21,14 @@ test('path unlocks only the first row at the start, and lessons step through the
   await expect(page.locator('.char-big')).toHaveText('あ')
   await page.getByRole('link', { name: /Next character/ }).click()
   await expect(page.locator('.char-big')).toHaveText('い')
+  await page.getByRole('link', { name: /Path/ }).click()
+  await expect(page.locator('a[data-node="a"]')).toBeVisible()
+})
+
+test('the quiz links back to the path', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/quiz/a'))
+  await page.getByRole('link', { name: /Path/ }).click()
+  await expect(page.locator('a[data-node="a"]')).toBeVisible()
 })
 
 test('unknown quiz nodes and out-of-range lesson indexes are not pages', async ({ page }) => {

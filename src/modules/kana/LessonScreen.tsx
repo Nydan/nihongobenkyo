@@ -1,5 +1,6 @@
 import { NotFound } from '../../core/NotFound'
 import { href } from '../../core/router'
+import { BackLink } from './BackLink'
 import { CharacterScreen } from './CharacterScreen'
 import type { Script } from './chars'
 import { findNode } from './path'
@@ -13,6 +14,7 @@ export function LessonScreen({ script, nodeId, index }: { script: Script; nodeId
     <CharacterScreen
       key={node.chars[index]}
       char={node.chars[index]}
+      back={<BackLink script={script} to="path" />}
       footer={<>
         <span class="lesson-progress">{index + 1} / {node.chars.length}</span>
         <a class="button primary" href={next}>{last ? '🎯 Row quiz ▶' : 'Next character ▶'}</a>

@@ -82,6 +82,7 @@ legend { font-weight: bold; margin-bottom: 8px; }
 @keyframes draw-stroke { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .ref-stroke.animate { animation: none; stroke-dashoffset: 0; } }
 .char-footer { display: flex; gap: 12px; align-items: center; }
+.char-screen .back, .quiz .back { justify-self: start; }
 .ref-stroke.faint { stroke: var(--faint); }
 .ref-stroke.next { stroke: var(--accent); opacity: 0.45; }
 .start-dot { fill: var(--good); animation: pulse 1.2s ease-in-out infinite; }
