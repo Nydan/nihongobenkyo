@@ -23,8 +23,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      # The lockfile may record a developer's registry mirror (from ~/.npmrc); fetch everything from the runner's default registry.
-      - run: npm ci --replace-registry-host=always
+      # The lockfile may record a developer's registry mirror (from ~/.npmrc). Point the runner's copy at the public
+      # registry; integrity hashes are still verified.
+      - run: sed -i 's#https://registry.stepsecurity.io/javascript/#https://registry.npmjs.org/#g' package-lock.json
+      - run: npm ci
       - run: npm test
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
