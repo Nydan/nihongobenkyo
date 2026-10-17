@@ -33,4 +33,11 @@ describe('progress', () => {
       expect(loadProgress(store)).toEqual(emptyProgress())
     }
   })
+  it('resets stored star counts outside 0..3 or not whole', () => {
+    const store = createStore(new MemoryStorage())
+    for (const n of [7, -1, 1.5, NaN]) {
+      store.write(PROGRESS_NS, PROGRESS_VERSION, { stars: { あ: n }, passed: [] })
+      expect(loadProgress(store), String(n)).toEqual(emptyProgress())
+    }
+  })
 })

@@ -33,7 +33,7 @@ export const kanaModule: LearningModule = {
         findKana(p.char)?.script === script ? <CharacterScreen key={p.char} char={p.char} /> : <NotFound />),
     },
     // LessonScreen and QuizScreen render NotFound themselves for an unknown node or an out-of-range index.
-    { path: ':script/lesson/:node/:i', render: withScript((s, p) => <LessonScreen key={`${p.node}/${p.i}`} script={s} nodeId={p.node} index={Number(p.i)} />) },
-    { path: ':script/quiz/:node', render: withScript((s, p) => <QuizScreen key={p.node} script={s} nodeId={p.node} />) },
+    { path: ':script/lesson/:node/:i', render: withScript((s, p) => <LessonScreen key={`${s}/${p.node}/${p.i}`} script={s} nodeId={p.node} index={Number(p.i)} />) },
+    { path: ':script/quiz/:node', render: withScript((s, p) => <QuizScreen key={`${s}/${p.node}`} script={s} nodeId={p.node} />) },
   ],
 }

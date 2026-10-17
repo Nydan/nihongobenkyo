@@ -18,11 +18,14 @@ export const withStars = (p: KanaProgress, char: string, stars: number): KanaPro
 export const withPassed = (p: KanaProgress, key: string): KanaProgress =>
   p.passed.includes(key) ? p : { ...p, passed: [...p.passed, key] }
 
+/** Stars render as `'⭐'.repeat(n) + '☆'.repeat(3 - n)`, which throws outside 0..3. */
+const isStarCount = (n: unknown): boolean => Number.isInteger(n) && (n as number) >= 0 && (n as number) <= 3
+
 const isProgress = (v: unknown): v is KanaProgress => {
   if (typeof v !== 'object' || v === null) return false
   const { stars, passed } = v as Record<string, unknown>
   return typeof stars === 'object' && stars !== null && !Array.isArray(stars)
-    && Object.values(stars).every(n => typeof n === 'number')
+    && Object.values(stars).every(isStarCount)
     && Array.isArray(passed) && passed.every(k => typeof k === 'string')
 }
 
