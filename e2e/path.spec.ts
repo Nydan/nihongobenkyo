@@ -30,6 +30,7 @@ test('unknown quiz nodes and out-of-range lesson indexes are not pages', async (
 test('passing the あ-row quiz unlocks the か row', async ({ page }) => {
   test.slow()
   await page.goto(appUrl('kana/hiragana/quiz/a'))
+  await expect(page.getByTestId('quiz-script')).toHaveText('ひらがな')
   for (let i = 0; i < 5; i++) {
     const romaji = await page.getByTestId('quiz-prompt').textContent()
     const char = ALL_KANA.find(k => k.script === 'hiragana' && k.romaji === romaji)!.char
@@ -38,8 +39,20 @@ test('passing the あ-row quiz unlocks the か row', async ({ page }) => {
     await expect(page.getByTestId('message')).toContainText('✅')
     await page.getByRole('button', { name: /Next/ }).click()
   }
-  await expect(page.getByTestId('quiz-done')).toBeVisible()
+  await expect(page.getByTestId('quiz-done')).toContainText('Row passed')
   await page.getByRole('link', { name: /Back to path/ }).click()
   await expect(page.locator('a[data-node="ka"]')).toBeVisible()
   await expect(page.locator('a[data-node="a"]')).toContainText('✅')
+})
+
+test('switching the quiz URL to the other script starts a quiz of that script', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/quiz/a'))
+  await expect(page.getByTestId('quiz-script')).toHaveText('ひらがな')
+  await page.evaluate(() => { location.hash = '#/kana/katakana/quiz/a' })
+  await expect(page.getByTestId('quiz-script')).toHaveText('カタカナ')
+  const romaji = await page.getByTestId('quiz-prompt').textContent()
+  const char = ALL_KANA.find(k => k.script === 'katakana' && k.romaji === romaji)!.char
+  await drawStrokes(page, refStrokes(char))
+  await page.getByRole('button', { name: 'Check' }).click()
+  await expect(page.getByTestId('message')).toContainText('✅')
 })

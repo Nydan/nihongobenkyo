@@ -104,6 +104,7 @@ legend { font-weight: bold; margin-bottom: 8px; }
 .locked { opacity: 0.5; cursor: default; }
 .quiz { display: grid; gap: 12px; justify-items: center; }
 .romaji-big { font-size: 2rem; color: var(--accent); }
+.quiz-script { font-size: 1rem; color: var(--muted); }
 .quiz-done { text-align: center; padding: 32px 0; }
 .celebrate { font-size: 2rem; }
 .lesson-progress { color: var(--muted); }

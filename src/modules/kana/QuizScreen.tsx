@@ -18,7 +18,7 @@ export function QuizScreen({ script, nodeId }: { script: Script; nodeId: string 
   if (isDone(state)) {
     return (
       <section class="quiz-done" data-testid="quiz-done">
-        <p class="celebrate">🎉 Row passed!</p>
+        <p class="celebrate">{node.kind === 'review' ? '🎉 Review passed!' : '🎉 Row passed!'}</p>
         <a class="button primary" href={href('kana', script)}>🗺️ Back to path</a>
       </section>
     )
@@ -29,7 +29,10 @@ export function QuizScreen({ script, nodeId }: { script: Script; nodeId: string 
   return (
     <section class="quiz">
       <p class="quiz-progress">✅ {done} / {node.chars.length}</p>
-      <h2>Write: <span class="romaji-big" data-testid="quiz-prompt">{findKana(char)?.romaji}</span> <SpeakButton text={char} /></h2>
+      <h2>
+        <span class="quiz-script" lang="ja" data-testid="quiz-script">{script === 'hiragana' ? 'ひらがな' : 'カタカナ'}</span>{' '}
+        Write: <span class="romaji-big" data-testid="quiz-prompt">{findKana(char)?.romaji}</span> <SpeakButton text={char} />
+      </h2>
       <FreeWriteStep
         key={round}
         char={char}
