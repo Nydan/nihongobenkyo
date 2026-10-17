@@ -17,7 +17,8 @@ export function createStore(backend?: Storage): Store {
 
   const getRaw = (k: string): string | null => {
     if (memory.has(k)) return memory.get(k)!
-    if (persistent) { try { return backend!.getItem(k) } catch { persistent = false } }
+    // Reads stay open even after a write failure so earlier persisted data remains visible.
+    if (backend) { try { return backend.getItem(k) } catch { return null } }
     return null
   }
   const setRaw = (k: string, v: string): void => {

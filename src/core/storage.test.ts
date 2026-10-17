@@ -53,6 +53,32 @@ describe('createStore', () => {
     expect(s.read('kana', 1, 'fallback')).toBe('after-failure')
   })
 
+  it('still reads other persisted keys after a write fails mid-session', () => {
+    const backend = new MemoryStorage()
+    const seed = createStore(backend)
+    seed.write('b', 1, 'persisted-b')
+    seed.write('a', 1, 'old-a')
+
+    const s = createStore(backend)
+    backend.setItem = () => { throw new Error('QuotaExceededError') }
+    s.write('a', 1, 'new-a')
+
+    expect(s.persistent).toBe(false)
+    expect(s.read('a', 1, 'fallback')).toBe('new-a')
+    expect(s.read('b', 1, 'fallback')).toBe('persisted-b')
+    // a store opened on the now write-broken backend can still read what was saved earlier
+    expect(createStore(backend).read('b', 1, 'fallback')).toBe('persisted-b')
+  })
+
+  it('returns the fallback when getItem throws mid-session', () => {
+    const backend = new MemoryStorage()
+    const s = createStore(backend)
+    s.write('a', 1, 'x')
+    backend.getItem = () => { throw new Error('SecurityError') }
+    expect(s.read('b', 1, 'fallback')).toBe('fallback')
+    expect(s.read('a', 1, 'fallback')).toBe('x')
+  })
+
   it('works with no backend at all', () => {
     const s = createStore(undefined)
     expect(s.persistent).toBe(false)
