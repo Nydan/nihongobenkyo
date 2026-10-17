@@ -23,7 +23,9 @@ export function checkStroke(user: Stroke, ref: Stroke, level: Level): StrokeResu
   const forward = meanDistance(u, r)
   const backward = meanDistance([...u].reverse(), r)
   // Compare against the reversed stroke first: on short strokes a reversed drawing is still within tolerance forward.
-  if (backward <= tol && backward < forward * 0.5) {
+  // The 0.8 ratio catches a reversed, slightly offset short tick (e.g. forward 7.4 / backward 4.1 on シ stroke 1),
+  // while correctly drawn real kana strokes, even sloppy ones, measure backward >= 1.69 × forward.
+  if (backward <= tol && backward < forward * 0.8) {
     return { ok: HINT_ONLY[level].includes('direction'), issue: 'direction', distance: backward }
   }
   if (forward <= tol) return { ok: true, distance: forward }
