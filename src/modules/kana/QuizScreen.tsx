@@ -19,7 +19,7 @@ export function QuizScreen({ script, nodeId }: { script: Script; nodeId: string 
     return (
       <section class="quiz-done" data-testid="quiz-done">
         <p class="celebrate">{node.kind === 'review' ? '🎉 Review passed!' : '🎉 Row passed!'}</p>
-        <a class="button primary" href={href('kana', script)}>🗺️ Back to path</a>
+        <a class="button primary" href={href('kana', script, 'path')}>🗺️ Back to path</a>
       </section>
     )
   }

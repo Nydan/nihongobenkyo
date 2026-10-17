@@ -6,7 +6,7 @@ A web app for learning Japanese, starting with **writing hiragana and katakana s
 
 ## Features (Kana Writing module)
 
-- **Guided path** row by row (あ・か・さ…), plus a **grid** to jump to any character
+- A **grid** to jump to any character (the first screen), plus a **guided path** row by row (あ・か・さ…)
 - Four steps per character:
   1. 👀 **Watch**: stroke-by-stroke animation with order and direction
   2. ✍️ **Trace**: trace over the guide, with each stroke checked as you go

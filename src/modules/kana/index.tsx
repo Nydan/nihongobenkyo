@@ -26,8 +26,8 @@ export const kanaModule: LearningModule = {
   progressKey: PROGRESS_NS,
   routes: [
     { path: '', render: () => <KanaHome /> },
-    { path: ':script', render: withScript(s => <ScriptScreen script={s} tab="path" />) },
-    { path: ':script/grid', render: withScript(s => <ScriptScreen script={s} tab="grid" />) },
+    { path: ':script', render: withScript(s => <ScriptScreen script={s} tab="grid" />) },
+    { path: ':script/path', render: withScript(s => <ScriptScreen script={s} tab="path" />) },
     {
       path: ':script/char/:char',
       // A character under the wrong script (ア in /hiragana/) is not a page.

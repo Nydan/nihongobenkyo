@@ -2,8 +2,9 @@ import { expect, test } from '@playwright/test'
 import { ALL_KANA } from '../src/modules/kana/chars'
 import { appUrl, drawStrokes, refStrokes } from './helpers'
 
-test('grid shows all 46 hiragana and opens a character', async ({ page }) => {
-  await page.goto(appUrl('kana/hiragana/grid'))
+test('the script screen opens on the grid of all 46 hiragana and opens a character', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana'))
+  await expect(page.getByRole('link', { name: /Grid/ })).toHaveAttribute('aria-current', 'page')
   await expect(page.locator('a.grid-cell')).toHaveCount(46)
   await page.locator('a.grid-cell', { hasText: 'き' }).click()
   await expect(page.locator('.char-big')).toHaveText('き')
@@ -11,6 +12,7 @@ test('grid shows all 46 hiragana and opens a character', async ({ page }) => {
 
 test('path unlocks only the first row at the start, and lessons step through the row', async ({ page }) => {
   await page.goto(appUrl('kana/hiragana'))
+  await page.getByRole('link', { name: /Path/ }).click()
   await expect(page.locator('a[data-node="a"]')).toBeVisible()
   await expect(page.locator('span.locked[data-node="ka"]')).toBeVisible()
   await page.locator('a[data-node="a"]').click()
