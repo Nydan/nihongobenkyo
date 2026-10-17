@@ -96,7 +96,7 @@ docs/ipad-checklist.md
 - [ ] **Step 1: Scaffold the project**
 
 ```bash
-cd /Users/d-aguswahyudi/Documents/projects/nohonggobenkyo
+cd /Users/d-aguswahyudi/Documents/projects/nihongobenkyo
 npm init -y
 npm install preact
 npm install -D vite @preact/preset-vite vite-plugin-singlefile typescript vitest tsx @playwright/test @types/node
@@ -1034,7 +1034,7 @@ Expected: a `kanji/` directory containing files like `03042.svg`. Note the relea
 - [ ] **Step 7: Generate the data and resolve stroke-count mismatches**
 
 ```bash
-cd /Users/d-aguswahyudi/Documents/projects/nohonggobenkyo
+cd /Users/d-aguswahyudi/Documents/projects/nihongobenkyo
 mkdir -p data/kanjivg
 npm run data:kana -- "$DL/kanji"
 ```

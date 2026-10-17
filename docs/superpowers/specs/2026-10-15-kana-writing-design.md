@@ -32,7 +32,7 @@ A web app that teaches writing hiragana and katakana stroke by stroke, for child
 ## 2. Architecture and repo layout
 
 ```
-nohonggobenkyo/
+nihongobenkyo/
   src/
     main.tsx              entry: registers modules, mounts shell
     shell/                home, navigation, settings, About/credits
