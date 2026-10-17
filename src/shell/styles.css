@@ -46,6 +46,7 @@ button:disabled { opacity: 0.4; cursor: default; }
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
 }
 .tile-icon { font-size: 3.5rem; }
+.home-module { margin-bottom: 24px; }
 fieldset { border: none; padding: 0; display: grid; gap: 12px; }
 legend { font-weight: bold; margin-bottom: 8px; }
 .radio-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center; padding: 12px; background: var(--surface); border-radius: var(--radius); }

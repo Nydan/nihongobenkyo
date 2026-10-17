@@ -7,11 +7,21 @@ export interface Route {
   render: (params: Record<string, string>) => ComponentChildren
 }
 
+/** A shortcut into a module, shown as a tile on the app home. */
+export interface Entry {
+  /** Route segments under `#/<module id>/`. */
+  segments: string[]
+  icon: string
+  label: string
+}
+
 export interface LearningModule {
   id: string
   title: string
   icon: string
   routes: Route[]
+  /** When set, the app home shows these tiles under the module's title instead of a single module tile. */
+  entries?: Entry[]
   /** Storage namespace for this module's progress. */
   progressKey: string
 }

@@ -10,18 +10,21 @@ test('dist/index.html is self-contained and carries both license notices', () =>
   expect(html).toContain('MIT')
 })
 
-test('home shows the Kana Writing tile', async ({ page }) => {
+test('home shows the Hiragana and Katakana tiles directly', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', e => errors.push(e.message))
   await page.goto(appUrl())
-  await expect(page.getByRole('link', { name: /Kana Writing/ })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Kana Writing/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Katakana/ })).toBeVisible()
+  await page.getByRole('link', { name: /Hiragana/ }).click()
+  await expect(page.getByRole('heading', { name: /ひらがな/ })).toBeVisible()
   await expect(page.locator('.banner')).toHaveCount(0)
   expect(errors).toEqual([])
 })
 
 test('opens from file:// as a single file', async ({ page }) => {
   await page.goto(fileUrl())
-  await expect(page.getByRole('link', { name: /Kana Writing/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Hiragana/ })).toBeVisible()
 })
 
 test('settings level persists across reloads', async ({ page }) => {

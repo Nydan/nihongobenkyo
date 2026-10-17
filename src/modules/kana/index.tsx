@@ -4,6 +4,7 @@ import { NotFound } from '../../core/NotFound'
 import { CharacterScreen } from './CharacterScreen'
 import { findKana } from './chars'
 import type { Script } from './chars'
+import { SCRIPT_ENTRIES } from './entries'
 import { KanaHome } from './KanaHome'
 import { LessonScreen } from './LessonScreen'
 import { PROGRESS_NS } from './progress'
@@ -20,7 +21,8 @@ const withScript = (render: (script: Script, p: Record<string, string>) => Compo
 export const kanaModule: LearningModule = {
   id: 'kana',
   title: 'Kana Writing',
-  icon: 'あ',
+  icon: '✍️',
+  entries: SCRIPT_ENTRIES,
   progressKey: PROGRESS_NS,
   routes: [
     { path: '', render: () => <KanaHome /> },
