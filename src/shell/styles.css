@@ -60,3 +60,22 @@ legend { font-weight: bold; margin-bottom: 8px; }
 .guide { fill: none; stroke: var(--guide); stroke-width: 0.6; }
 .guide-dash { stroke-dasharray: 2 2; }
 .ink { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.char-screen { display: grid; gap: 16px; justify-items: center; }
+.char-head { display: flex; align-items: center; gap: 16px; }
+.char-big { font-size: 4rem; line-height: 1; }
+.romaji { font-size: 1.5rem; color: var(--muted); }
+.steps { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.steps [aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.step { display: grid; gap: 12px; justify-items: center; width: 100%; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+.watch-progress { min-width: 80px; text-align: center; font-size: 1.2rem; }
+.ref-stroke { fill: none; stroke: var(--ref); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.ref-stroke.upcoming { stroke: var(--faint); }
+.ref-stroke.current { stroke: var(--accent); marker-end: url(#arrow); }
+.ref-stroke.animate { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-stroke 0.9s ease forwards; }
+.arrow-head { fill: var(--accent); }
+.stroke-num { font-size: 8px; fill: var(--muted); }
+.stroke-num.current { fill: var(--accent); font-weight: bold; }
+@keyframes draw-stroke { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ref-stroke.animate { animation: none; stroke-dashoffset: 0; } }
+.char-footer { display: flex; gap: 12px; align-items: center; }
