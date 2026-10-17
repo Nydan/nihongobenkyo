@@ -14,9 +14,11 @@ function stampServiceWorker(): Plugin {
     closeBundle() {
       const sw = resolve('dist/sw.js')
       const html = resolve('dist/index.html')
-      if (!existsSync(sw) || !existsSync(html)) return
+      if (!existsSync(sw) || !existsSync(html)) throw new Error('stamp-service-worker: dist/sw.js or dist/index.html is missing')
       const version = createHash('sha256').update(readFileSync(html)).digest('hex').slice(0, 12)
-      writeFileSync(sw, readFileSync(sw, 'utf8').replace('__BUILD_VERSION__', version))
+      const stamped = readFileSync(sw, 'utf8').replace('__BUILD_VERSION__', version)
+      if (stamped.includes('__BUILD_VERSION__')) throw new Error('stamp-service-worker: placeholder still present in dist/sw.js')
+      writeFileSync(sw, stamped)
     },
   }
 }

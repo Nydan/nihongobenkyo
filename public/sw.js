@@ -4,7 +4,9 @@ const CACHE = `nb-${VERSION}`
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png']
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()))
+  // cache: 'reload' bypasses the HTTP cache, so a quick redeploy never precaches a stale index.html.
+  const requests = ASSETS.map(u => new Request(u, { cache: 'reload' }))
+  event.waitUntil(caches.open(CACHE).then(c => c.addAll(requests)).then(() => self.skipWaiting()))
 })
 
 self.addEventListener('activate', event => {
