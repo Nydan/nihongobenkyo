@@ -58,7 +58,7 @@ src/shell/        home, navigation, settings, About
 src/core/         module registry, router, storage, speech, stroke checking
 src/modules/kana/ Kana Writing module
 data/kanjivg/     stroke data (CC BY-SA 3.0)
-content/          Markdown lessons for future modules (e.g. grammar)
+content/          (future) Markdown lessons for future modules (e.g. grammar)
 scripts/          data generation
 docs/             design specs
 ```

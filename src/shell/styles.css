@@ -24,6 +24,8 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); }
 a { color: inherit; }
+/* No double-tap zoom on iPad when tapping controls quickly. */
+button, a { touch-action: manipulation; }
 .app { max-width: 960px; margin: 0 auto; padding: env(safe-area-inset-top) 16px 32px; }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
 .topbar a { font-size: 1.6rem; text-decoration: none; padding: 8px; }

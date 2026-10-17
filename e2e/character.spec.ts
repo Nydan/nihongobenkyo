@@ -17,6 +17,16 @@ test('watch steps through あ stroke by stroke', async ({ page }) => {
   await expect(progress).toHaveText('1 / 3')
 })
 
+test('replay at stroke 1 restarts the stroke animation', async ({ page }) => {
+  await page.goto(appUrl('kana/hiragana/char/あ'))
+  await expect(page.getByTestId('watch-progress')).toHaveText('1 / 3')
+  const animated = await page.locator('.ref-stroke.animate').elementHandle()
+  await page.getByRole('button', { name: 'Replay' }).click()
+  // A new path element replays the CSS animation from the start.
+  await expect.poll(() => animated!.evaluate(el => el.isConnected)).toBe(false)
+  await expect(page.locator('.ref-stroke.animate')).toHaveCount(1)
+})
+
 test('percent-encoded character URLs work', async ({ page }) => {
   await page.goto(appUrl('kana/katakana/char/%E3%82%A2'))
   await expect(page.locator('.char-big')).toHaveText('ア')

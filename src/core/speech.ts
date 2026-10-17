@@ -3,8 +3,8 @@ import { useEffect, useState } from 'preact/hooks'
 const isJapanese = (v: { lang: string }): boolean => v.lang.toLowerCase().replace('_', '-').startsWith('ja')
 
 /**
- * Picks a Japanese voice, preferring on-device ones: remote voices (e.g. Chrome's "Google 日本語")
- * synthesize over the network, and this app makes no runtime network calls.
+ * Picks a Japanese voice, preferring on-device ones. Remote voices (e.g. Chrome's "Google 日本語") synthesize over the
+ * network, so one is used only when no local Japanese voice exists; the browser then makes that request, not the app.
  */
 export const findJapaneseVoice = <T extends { lang: string; localService?: boolean }>(voices: readonly T[]): T | undefined => {
   const japanese = voices.filter(isJapanese)
